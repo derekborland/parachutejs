@@ -9,7 +9,7 @@ var pkg = require('./package.json');
 // file header helper function
 function fileHeader() {
 	return[    
-    '/*! ' + pkg.name + ' ' + pkg.version + ' | https://github.com/derekborland/parachutejs.git */\n' 
+    '/*! ' + pkg.name + ' ' + pkg.version + ' | https://github.com/derekborland/parachutejs.git | Built: ' + Date.now() + ' */\n' 
 	].join('\n');
 }
 
