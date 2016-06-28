@@ -15,7 +15,8 @@
 	//
 	// Parachute.parallax({
 	// 	element: '#element',
-	// 	speed: 1.2
+	//  pxToMove: -200,
+	//  topTriggerOffset: 600
 	// });
 	
 	// Sequence elements:
@@ -34,14 +35,6 @@
 	// Init
 	//
 	// Parachute.init();
-	
-	
-	// NEW API
-	//
-	// Parachute({
-	// 	element: '#element',
-	// 	pxToMove: -200
-	// });
 	
 	
 	function Parachute() {
