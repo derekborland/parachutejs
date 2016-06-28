@@ -153,7 +153,6 @@
 	
 	// parallax animations
 	Parachute.prototype.parallaxAnimations = function() {
-		// console.log(this.parallaxArr[0].boundingBox.top);
 		for(var i = 0; i < this.parallaxArrLength; i++) {
 				
 				// easing - working / old
@@ -168,7 +167,7 @@
 			if(elementInViewBottom && elementInViewTop) {
 				// parallax easing
 				this.parallaxArr[i].currentScrollTop += (((elementPositionFromViewportTop - this.winHeight) * -_pxToMove) - this.parallaxArr[i].currentScrollTop) * 0.075;
-				console.log('here');
+				
 				
 			// element is at the top of the viewport
 			} else if (elementInViewBottom) {
@@ -178,7 +177,7 @@
 				} else if (this.parallaxArr[i].currentScrollTop < this.parallaxArr[i].pxToMove + 2) {
 					// snap to the `pxToMove` value
 					this.parallaxArr[i].currentScrollTop += (this.parallaxArr[i].pxToMove - this.parallaxArr[i].currentScrollTop);
-					console.log(this.parallaxArr[i].currentScrollTop);
+					
 				}
 			}
 			
