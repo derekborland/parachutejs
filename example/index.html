@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="assets/css/vendor.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  
+</head>
+<body>
+
+	<div id="page">
+		<div id="scrollContainer">
+			
+			
+			<!-- Section 1 -->
+			<div class="block red"></div>
+	
+	
+			<!-- Section 2 -->
+			<div class="block blue">
+				
+				<div class="container">
+					<div class="row">
+						
+						<!-- -->
+						
+						<div class="col-md-6">
+							<div class="content js-parallax-1" style="margin-top: 200px;">
+								<div class="square">
+									
+									<div class="row">
+										
+										<div class="col-md-6">
+											<div class="cascade js-cascade-1"></div>
+										</div>
+										
+										<div class="col-md-6">
+											<div class="cascade js-cascade-2"></div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- -->
+						
+						<div class="col-md-6">
+							<div class="content js-parallax-2">
+								<div class="square">
+									
+									<div class="row">
+										
+										<div class="col-md-6">
+											<div class="cascade js-cascade"></div>
+										</div>
+										
+										<div class="col-md-6">
+											<div class="cascade js-cascade"></div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<!-- -->
+						
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			<!-- Section 3 -->
+			<div class="block green"></div>
+			
+			
+			<!-- Section 4 -->
+			<div class="block black"></div>
+			
+		</div>
+	</div>
+	
+	<div id="fakeScrollContainer"></div>
+	
+	<script src="assets/js/vendor/jquery-2.2.5.min.js"></script>
+	<script src="assets/js/vendor/bootstrap.js"></script>
+	<script src="../src/parachute.js"></script>
+	<script>
+	
+		;(function($){
+			
+			$(window).ready(function(){
+				
+				// page
+				Parachute.page({
+					pageWrapper: '#page',
+					scrollContainer: '#scrollContainer',
+					heightContainer: '#fakeScrollContainer'
+				});
+				
+				// parallax
+				Parachute.parallax({
+					element: '.js-parallax-1',
+					pxToMove: -400,
+					topTriggerOffset: 600
+				});
+				
+				Parachute.parallax({
+					element: '.js-parallax-2',
+					speed: 1,
+					pxToMove: -200,
+					topTriggerOffset: 600
+				});
+				
+				// sequence
+				Parachute.sequence({
+					element: '.js-cascade-1',
+					callback: function(active) {
+						// console.log(active);
+					},
+					offset: 200
+				});
+				
+				// let's go!
+				Parachute.init();
+				
+			});
+			
+		})(jQuery);
+		
+	</script>
+	
+</body>
+</html>
