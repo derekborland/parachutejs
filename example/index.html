@@ -123,8 +123,15 @@
 					element: '.js-cascade-1',
 					callback: function(active) {
 						// console.log(active);
+						// `active = true` 
+						// element is in view
+						//
+						// `active = false`
+						// element not in view
 					},
-					offset: 200
+					offset: (function(){
+						return 200;
+					})()
 				});
 				
 				// let's go!

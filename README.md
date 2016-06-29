@@ -31,6 +31,16 @@ $(window).ready(function(){
 		offset: 200
 	});
 	
+	Parachute.sequence({
+		element: '.js-cascade-1',
+		callback: function(active) {
+			// `active == true` - element in view
+		},
+		offset: (function(){
+			return 200;
+		})()
+	});
+	
 	// let's go!
 	Parachute.init();
 	
