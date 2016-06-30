@@ -1,8 +1,8 @@
 ;(function($, window, document, undefined){
-	
-	
+
+
 	// Usage:
-	
+
 	// Page setup:
 	//
 	// Parachute.page({
@@ -10,7 +10,7 @@
 	// 	scrollContainer: '#scrollContainer',
 	// 	fakeContainer: '#fakeContainer'
 	// });
-	
+
 	// Parallax elements
 	//
 	// Parachute.parallax({
@@ -18,7 +18,7 @@
 	//  pxToMove: -200,
 	//  topTriggerOffset: 600
 	// });
-	
+
 	// Sequence elements:
 	//
 	// `active` passed to callback is TRUE for scrolled into view
@@ -31,12 +31,12 @@
 	// 	callback: function(active) {},
 	// 	offset: 200
 	// });
-	
+
 	// Init
 	//
 	// Parachute.init();
-	
-	
+
+
 	function Parachute() {
 		// defaults
 		this.defaults = {
@@ -45,29 +45,29 @@
 			heightContainer: '#heightContainer',
 		};
 		this.opts;
-		
+
 		this.$pageWrapper;
 		this.$scrollContainer;
 		this.$heightContainer;
-		
+
 		this.$win;
 		this.winHeight;
 		this.winWidth;
-		
+
 		this.scrollTop = 0;
 		this.currentScrollTop = 0;
-		
+
 		this.parallaxArr = [];
 		this.parallaxArrLength = 0;
-		
+
 		this.sequenceArr = [];
 		this.sequenceArrLength = 0;
-		
+
 		this.triggerOffset = 200;
-		
+
 		this.bottomTriggerOffset = 250;
 	};
-	
+
 	// page setup function
 	Parachute.prototype.page = function(opts) {
 		// merge defaults with user passed options
@@ -81,6 +81,7 @@
 	Parachute.prototype.parallax = function(opts) {
 		this.parallaxArr.push({
 			element: opts.element,
+			$element: $(opts.element),
 			speed: opts.speed || 1,
 			pxToMove: opts.pxToMove || 0,
 			topTriggerOffset: opts.topTriggerOffset || 0,
@@ -89,7 +90,7 @@
 		});
 		this.parallaxArrLength++;
 	};
-	
+
 	// add to sequence array
 	Parachute.prototype.sequence = function(opts) {
 		this.sequenceArr.push({
@@ -100,7 +101,7 @@
 		});
 		this.sequenceArrLength++;
 	};
-	
+
 	// initialize
 	Parachute.prototype.init = function() {
 		// events
@@ -112,85 +113,88 @@
 		this.updateHeight();
 		this.onEnterFrame();
 	};
-	
-	
+
+
 	// update height function
 	Parachute.prototype.updateHeight = function() {
 		this.$heightContainer.css('height', this.$scrollContainer.height());
 	};
-	
+
 	// resize event callback
 	Parachute.prototype.onResize = function() {
 		this.$win = $(window);
 		this.winHeight = this.$win.height();
 		this.winWidth = this.$win.width();
 	};
-	
+
 	// scroll event callback
 	Parachute.prototype.onScroll = function() {
 		this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+		// console.log('scrolling');
 	};
-	
+
 	// frame animation callback
 	Parachute.prototype.onEnterFrame = function() {
 		requestAnimationFrame($.proxy(this.onEnterFrame, this));
-		
+
 		// animate...
 		this.scrollEasing();
 		this.parallaxAnimations();
 		this.sequenceAnimations();
 	};
-	
+
 	// scroll easing function
 	Parachute.prototype.scrollEasing = function() {
 		// page scroll easing
-		this.currentScrollTop += (this.scrollTop - this.currentScrollTop) * 0.1;
+		this.currentScrollTop += (this.scrollTop - this.currentScrollTop) * 0.075;
 		if(this.currentScrollTop < 1) { this.currentScrollTop = 0 }
 		this.$scrollContainer.css({
 			'transform': 'translateY(' + -this.currentScrollTop + 'px) translateZ(0)'
 		});
 	};
-	
+
 	// parallax animations
 	Parachute.prototype.parallaxAnimations = function() {
 		for(var i = 0; i < this.parallaxArrLength; i++) {
-				
-				// easing - working / old
-				// this.parallaxArr[i].currentScrollTop += (((this.parallaxArr[i].boundingBox.top - this.winHeight - this.scrollTop) / 4) - this.parallaxArr[i].currentScrollTop) * 0.075;
+			
+			var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
+			var elementBottomPixedRange = this.parallaxArr[i].boundingBox.top - this.winHeight;
+			var elementRangeDiff = elementTopPixelRange - elementBottomPixedRange;
+			var pxMulitplier = this.parallaxArr[i].pxToMove / this.winHeight;
 
-			var elementInViewBottom = this.winHeight + this.scrollTop + this.bottomTriggerOffset >= this.parallaxArr[i].boundingBox.top;
-			
-			var elementInViewTop = this.scrollTop <= this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height -this.parallaxArr[i].topTriggerOffset;
-			
-			var _pxToMove = this.parallaxArr[i].pxToMove / this.winHeight;
-			
-			var elementPositionFromViewportTop = this.parallaxArr[i].boundingBox.top - this.scrollTop;
-			
-			// element is in the viewport
-			if(elementInViewBottom && elementInViewTop) {
-				// parallax easing
-				this.parallaxArr[i].currentScrollTop += (((elementPositionFromViewportTop - this.winHeight) * -_pxToMove) - this.parallaxArr[i].currentScrollTop) * 0.075;
-				
-				
-			// element is at the top of the viewport
-			} else if (elementInViewBottom) {
-				if(!(this.parallaxArr[i].currentScrollTop < this.parallaxArr[i].pxToMove + 1)) { 
-					// parallax easing
-					this.parallaxArr[i].currentScrollTop += (this.parallaxArr[i].pxToMove - this.parallaxArr[i].currentScrollTop) * 0.075;
-				} else if (this.parallaxArr[i].currentScrollTop < this.parallaxArr[i].pxToMove + 2) {
-					// snap to the `pxToMove` value
-					this.parallaxArr[i].currentScrollTop += (this.parallaxArr[i].pxToMove - this.parallaxArr[i].currentScrollTop);
-					// this.parallaxArr[i].currentScrollTop =
+			// console.log('scrollTop:', this.scrollTop, 'topRange:', elementTopPixelRange, 'bottomRange:',elementBottomPixedRange, 'diff:', elementRangeDiff);
+
+			// Element is in view
+			if( this.scrollTop > elementBottomPixedRange && this.scrollTop < elementTopPixelRange ) {
+				this.parallaxArr[i].currentScrollTop += ((( this.scrollTop - elementBottomPixedRange ) * pxMulitplier ) - this.parallaxArr[i].currentScrollTop ) * 0.075;
+				if( this.parallaxArr[i].currentScrollTop < this.parallaxArr[i].pxToMove ) {
+					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
 				}
 			}
 			
-			// apply transfomation
-			$(this.parallaxArr[i].element).css({
-				'transform': 'translateY(' + this.parallaxArr[i].currentScrollTop + 'px) translateZ(0)' 
+			// Element is below viewport
+			if( this.scrollTop < elementBottomPixedRange ) {
+				this.parallaxArr[i].currentScrollTop -= this.parallaxArr[i].currentScrollTop * 0.075;
+				if( this.parallaxArr[i].currentScrollTop >= -1 ) {
+					this.parallaxArr[i].currentScrollTop = 0;
+				}
+			}
+			
+			// Element is above viewport
+			if( this.scrollTop > elementTopPixelRange ) {
+				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * 0.075);
+				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+2) {
+					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
+				}
+			}
+
+			this.parallaxArr[i].$element.css({
+				'transform': 'translateY(' + this.parallaxArr[i].currentScrollTop + 'px) translateZ(0)',
+				'backface-visibility': 'hidden'
 			});
 		}
 	};
-	
+
 	// check if element is in view ( parallax )
 	Parachute.prototype.elementInView = function(i) {
 		if(this.scrollTop > (this.parallaxArr[i].boundingBox.top - this.winHeight - this.triggerOffset)) {
@@ -200,7 +204,7 @@
 		}
 		return false;
 	};
-	
+
 	// sequence animations
 	Parachute.prototype.sequenceAnimations = function() {
 		for(var i = 0; i < this.sequenceArrLength; i++) {
@@ -211,7 +215,7 @@
 			}
 		}
 	};
-	
+
 	// check if element is in view ( sequence )
 	Parachute.prototype.sequenceElementInView = function(i) {
 		if(this.scrollTop > (this.sequenceArr[i].boundingBox.top - this.winHeight + Number(this.sequenceArr[i].offset))) {
@@ -219,7 +223,7 @@
 		}
 		return false;
 	};
-	
+
 	window.Parachute = new Parachute();
-	
+
 })(jQuery, window, document);
