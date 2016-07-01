@@ -157,12 +157,13 @@
 	Parachute.prototype.parallaxAnimations = function() {
 		for(var i = 0; i < this.parallaxArrLength; i++) {
 			
+			// var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementBottomPixedRange = this.parallaxArr[i].boundingBox.top - this.winHeight;
 			var elementRangeDiff = elementTopPixelRange - elementBottomPixedRange;
 			var pxMulitplier = this.parallaxArr[i].pxToMove / this.winHeight;
 
-			// console.log('scrollTop:', this.scrollTop, 'topRange:', elementTopPixelRange, 'bottomRange:',elementBottomPixedRange, 'diff:', elementRangeDiff);
+			// console.log('scrollTop:', this.scrollTop, 'topRange:', elementTopPixelRange, 'bottomRange:', elementBottomPixedRange, 'diff:', elementRangeDiff);
 
 			// Element is in view
 			if( this.scrollTop > elementBottomPixedRange && this.scrollTop < elementTopPixelRange ) {
@@ -182,8 +183,12 @@
 			
 			// Element is above viewport
 			if( this.scrollTop > elementTopPixelRange ) {
+				console.log( 'top:', elementTopPixelRange, 'scrollTop', this.scrollTop );
+				
 				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * 0.075);
-				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+2) {
+				// this.parallaxArr[i].currentScrollTop += this.parallaxArr[i].currentScrollTop * 0.075;
+				
+				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+1) {
 					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
 				}
 			}
@@ -223,6 +228,19 @@
 		}
 		return false;
 	};
+	
+	
+	// @todo
+	Parachute.prototype.scrollTo = function(selector, callback) {
+		
+		var $element = $(selector);
+		var positionFromTop = $element[0].getBoundingClientRect().top;
+		
+		// scroll to `positionFromTop`
+		
+		// call passed `callback`
+		
+	}
 
 	window.Parachute = new Parachute();
 
