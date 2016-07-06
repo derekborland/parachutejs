@@ -40,9 +40,9 @@
 	function Parachute() {
 		// defaults
 		this.defaults = {
-			pageWrapper: '#pageWrapper',
+			// pageWrapper: '#pageWrapper',
 			scrollContainer: '#scrollContainer',
-			heightContainer: '#heightContainer',
+			heightContainer: '#heightContainer'
 		};
 		this.opts;
 
@@ -72,7 +72,7 @@
 	Parachute.prototype.page = function(opts) {
 		// merge defaults with user passed options
 		this.opts = $.extend({}, this.defaults, opts);
-		this.$pageWrapper = $(this.opts.pageWrapper);
+		// this.$pageWrapper = $(this.opts.pageWrapper);
 		this.$scrollContainer = $(this.opts.scrollContainer);
 		this.$heightContainer = $(this.opts.heightContainer);
 	};
@@ -96,7 +96,7 @@
 		this.sequenceArr.push({
 			element: opts.element,
 			callback: opts.callback,
-			offset: opts.offset,
+			offset: opts.offset || 300,
 			boundingBox: $(opts.element)[0].getBoundingClientRect()
 		});
 		this.sequenceArrLength++;
@@ -157,7 +157,6 @@
 	Parachute.prototype.parallaxAnimations = function() {
 		for(var i = 0; i < this.parallaxArrLength; i++) {
 			
-			// var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementBottomPixedRange = this.parallaxArr[i].boundingBox.top - this.winHeight;
 			var elementRangeDiff = elementTopPixelRange - elementBottomPixedRange;
@@ -186,7 +185,6 @@
 				console.log( 'top:', elementTopPixelRange, 'scrollTop', this.scrollTop );
 				
 				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * 0.075);
-				// this.parallaxArr[i].currentScrollTop += this.parallaxArr[i].currentScrollTop * 0.075;
 				
 				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+1) {
 					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
@@ -232,14 +230,11 @@
 	
 	// @todo
 	Parachute.prototype.scrollTo = function(selector, callback) {
-		
-		var $element = $(selector);
-		var positionFromTop = $element[0].getBoundingClientRect().top;
+		// var $element = $(selector);
+		// var positionFromTop = $element[0].getBoundingClientRect().top;
 		
 		// scroll to `positionFromTop`
-		
 		// call passed `callback`
-		
 	}
 
 	window.Parachute = new Parachute();
