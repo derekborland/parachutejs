@@ -95,12 +95,14 @@
 	<script>
 
 		;(function($){
-
-			$(window).ready(function(){
-
+			
+			
+			Parachute.onReady(function(Parachute) {
+				// console.log(Parachute);v
+				
 				// page
 				Parachute.page({
-					pageWrapper: '#page',
+					// pageWrapper: '#page',
 					scrollContainer: '#scrollContainer',
 					heightContainer: '#fakeScrollContainer'
 				});
@@ -136,7 +138,7 @@
 
 				// let's go!
 				Parachute.init();
-
+				
 			});
 
 		})(jQuery);

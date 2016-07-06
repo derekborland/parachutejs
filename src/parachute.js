@@ -1,42 +1,6 @@
 ;(function($, window, document, undefined){
 
-
-	// Usage:
-
-	// Page setup:
 	//
-	// Parachute.page({
-	// 	pageWrapper: '#pageWrapper'
-	// 	scrollContainer: '#scrollContainer',
-	// 	fakeContainer: '#fakeContainer'
-	// });
-
-	// Parallax elements
-	//
-	// Parachute.parallax({
-	// 	element: '#element',
-	//  pxToMove: -200,
-	//  topTriggerOffset: 600
-	// });
-
-	// Sequence elements:
-	//
-	// `active` passed to callback is TRUE for scrolled into view
-	// FALSE for out of view (below fold)
-	//
-	// `offset` is from bottom of the browser
-	//
-	// Parachute.sequence({
-	// 	element: '#element',
-	// 	callback: function(active) {},
-	// 	offset: 200
-	// });
-
-	// Init
-	//
-	// Parachute.init();
-
-
 	function Parachute() {
 		// defaults
 		this.defaults = {
@@ -64,8 +28,21 @@
 		this.sequenceArrLength = 0;
 
 		this.triggerOffset = 200;
-
 		this.bottomTriggerOffset = 250;
+		
+		this.readyCallbacks = [];
+		this.readyCallbacksLength = 0;
+		
+		this.setup();
+	};
+	
+	// add function(s) to the window ready event
+	Parachute.prototype.setup = function() {
+		$(window).ready($.proxy(function() {
+			for(var i = 0; i < this.readyCallbacksLength; i++) {
+				this.readyCallbacks[i](this);
+			}
+		}, this));
 	};
 
 	// page setup function
@@ -130,7 +107,6 @@
 	// scroll event callback
 	Parachute.prototype.onScroll = function() {
 		this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		// console.log('scrolling');
 	};
 
 	// frame animation callback
@@ -227,6 +203,11 @@
 		return false;
 	};
 	
+	// add function(s) to init/window ready
+	Parachute.prototype.onReady = function(callback) {
+		this.readyCallbacks.push(callback);
+		this.readyCallbacksLength++;
+	};
 	
 	// @todo
 	Parachute.prototype.scrollTo = function(selector, callback) {
