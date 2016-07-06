@@ -158,10 +158,7 @@
 			
 			// Element is above viewport
 			if( this.scrollTop > elementTopPixelRange ) {
-				console.log( 'top:', elementTopPixelRange, 'scrollTop', this.scrollTop );
-				
 				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * 0.075);
-				
 				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+1) {
 					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
 				}
