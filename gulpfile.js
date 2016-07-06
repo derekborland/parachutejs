@@ -2,38 +2,38 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var header = require('gulp-header');
+var footer = require('gulp-footer');
 var rename = require('gulp-rename');
+var concat = require('gulp-concat');
 var pkg = require('./package.json');
+var del = require('del');
 
 
-// file header helper function
-function fileHeader() {
-	return[    
-    '/*! ' + pkg.name + ' ' + pkg.version + ' | https://github.com/derekborland/parachutejs.git | Built: ' + Date.now() + ' */\n' 
-	].join('\n');
-}
-
-
-// copyright helper function
-function copyrightYear(creationDate) {
-	var now = new Date().getFullYear();
-	if(creationDate == now) {
-		return '2016';
-	}
-	return creationDate + '-' + now;
-}
+var banner = ['/**',
+  ' * <%= pkg.name %> - <%= pkg.description %>',
+  ' * @version v<%= pkg.version %>',
+  ' * @link <%= pkg.homepage %>',
+  ' * @license <%= pkg.license %>',
+  ' */',
+  ''].join('\n');
 
 
 // js files
-var jsFiles = ['src/**/*.js'];
+var jsFiles = [
+	'src/*.js'
+];
+
+// clean up `lib` dir
+gulp.task('clean', function() {
+		del.sync(['./lib/**'])
+});
 
 
 // build
 gulp.task('build', function() {
-	gulp.src([
-		'src/parachute.js'
-	])
-	.pipe(header(fileHeader('Parachute JS')))
+	gulp.src(jsFiles)
+	.pipe(concat('parachute.js'))
+	.pipe(header(banner, { pkg: pkg }))
 	.pipe(rename({
 		suffix: '-' + pkg.version
 	}))
@@ -41,12 +41,11 @@ gulp.task('build', function() {
 });
 
 
-// build min
+// build & min
 gulp.task('build-min', function() {
-	gulp.src([
-		'src/parachute.js'
-	])
-	.pipe(header(fileHeader('Parachute JS')))
+	gulp.src(jsFiles)
+	.pipe(concat('parachute.js'))
+	.pipe(header(banner, { pkg: pkg }))
 	.pipe(rename({
 		suffix: '-' + pkg.version + '.min'
 	}))
@@ -59,9 +58,8 @@ gulp.task('build-min', function() {
 
 // watch
 gulp.task('watch', function() {
-	gulp.watch(jsFiles, ['build', 'build-min']);
+	gulp.watch(jsFiles, ['clean', 'build', 'build-min']);
 });
 
-
 // default
-gulp.task('default', ['build', 'build-min', 'watch']);
+gulp.task('default', ['clean', 'build', 'build-min', 'watch']);
