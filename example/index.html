@@ -98,7 +98,6 @@
 			
 			
 			Parachute.onReady(function(Parachute) {
-				// console.log(Parachute);v
 				
 				// page
 				Parachute.page({
@@ -110,21 +109,18 @@
 				// parallax
 				Parachute.parallax({
 					element: '.js-parallax-1',
-					pxToMove: -400,
-					topTriggerOffset: 400
+					pxToMove: -400
 				});
 
 				Parachute.parallax({
 					element: '.js-parallax-2',
-					pxToMove: -200,
-					topTriggerOffset: 400
+					pxToMove: -200
 				});
 
 				// sequence
 				Parachute.sequence({
 					element: '.js-cascade-1',
 					callback: function(active) {
-						// console.log(active);
 						// `active = true`
 						// element is in view
 						//

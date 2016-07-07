@@ -61,7 +61,7 @@
 			$element: $(opts.element),
 			speed: opts.speed || 1,
 			pxToMove: opts.pxToMove || 0,
-			topTriggerOffset: opts.topTriggerOffset || 0,
+			topTriggerOffset: opts.topTriggerOffset || 400,
 			boundingBox: $(opts.element)[0].getBoundingClientRect(),
 			currentScrollTop: 0
 		});
