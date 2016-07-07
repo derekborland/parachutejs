@@ -6,43 +6,7 @@
  */
 ;(function($, window, document, undefined){
 
-
-	// Usage:
-
-	// Page setup:
 	//
-	// Parachute.page({
-	// 	pageWrapper: '#pageWrapper'
-	// 	scrollContainer: '#scrollContainer',
-	// 	fakeContainer: '#fakeContainer'
-	// });
-
-	// Parallax elements
-	//
-	// Parachute.parallax({
-	// 	element: '#element',
-	//  pxToMove: -200,
-	//  topTriggerOffset: 600
-	// });
-
-	// Sequence elements:
-	//
-	// `active` passed to callback is TRUE for scrolled into view
-	// FALSE for out of view (below fold)
-	//
-	// `offset` is from bottom of the browser
-	//
-	// Parachute.sequence({
-	// 	element: '#element',
-	// 	callback: function(active) {},
-	// 	offset: 200
-	// });
-
-	// Init
-	//
-	// Parachute.init();
-
-
 	function Parachute() {
 		// defaults
 		this.defaults = {
@@ -70,8 +34,21 @@
 		this.sequenceArrLength = 0;
 
 		this.triggerOffset = 200;
-
 		this.bottomTriggerOffset = 250;
+		
+		this.readyCallbacks = [];
+		this.readyCallbacksLength = 0;
+		
+		this.setup();
+	};
+	
+	// add function(s) to the window ready event
+	Parachute.prototype.setup = function() {
+		$(window).ready($.proxy(function() {
+			for(var i = 0; i < this.readyCallbacksLength; i++) {
+				this.readyCallbacks[i](this);
+			}
+		}, this));
 	};
 
 	// page setup function
@@ -90,7 +67,7 @@
 			$element: $(opts.element),
 			speed: opts.speed || 1,
 			pxToMove: opts.pxToMove || 0,
-			topTriggerOffset: opts.topTriggerOffset || 0,
+			topTriggerOffset: opts.topTriggerOffset || 400,
 			boundingBox: $(opts.element)[0].getBoundingClientRect(),
 			currentScrollTop: 0
 		});
@@ -136,7 +113,6 @@
 	// scroll event callback
 	Parachute.prototype.onScroll = function() {
 		this.scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-		// console.log('scrolling');
 	};
 
 	// frame animation callback
@@ -188,10 +164,7 @@
 			
 			// Element is above viewport
 			if( this.scrollTop > elementTopPixelRange ) {
-				console.log( 'top:', elementTopPixelRange, 'scrollTop', this.scrollTop );
-				
 				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * 0.075);
-				
 				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+1) {
 					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
 				}
@@ -233,6 +206,11 @@
 		return false;
 	};
 	
+	// add function(s) to init/window ready
+	Parachute.prototype.onReady = function(callback) {
+		this.readyCallbacks.push(callback);
+		this.readyCallbacksLength++;
+	};
 	
 	// @todo
 	Parachute.prototype.scrollTo = function(selector, callback) {

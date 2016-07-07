@@ -9,6 +9,7 @@ var pkg = require('./package.json');
 var del = require('del');
 
 
+
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
@@ -25,41 +26,44 @@ var jsFiles = [
 
 // clean up `lib` dir
 gulp.task('clean', function() {
-		del.sync(['./lib/**'])
+		del.sync(['./dist/**'])
 });
 
 
 // build
 gulp.task('build', function() {
 	gulp.src(jsFiles)
-	.pipe(concat('parachute.js'))
+	// .pipe(concat('parachute.js'))
 	.pipe(header(banner, { pkg: pkg }))
-	.pipe(rename({
-		suffix: '-' + pkg.version
-	}))
-	.pipe(gulp.dest('lib/'));
+	// .pipe(rename({
+	// 	suffix: '-' + pkg.version
+	// }))
+	.pipe(gulp.dest('dist/'));
 });
 
 
 // build & min
-gulp.task('build-min', function() {
-	gulp.src(jsFiles)
-	.pipe(concat('parachute.js'))
-	.pipe(header(banner, { pkg: pkg }))
-	.pipe(rename({
-		suffix: '-' + pkg.version + '.min'
-	}))
-	.pipe(uglify({
-		preserveComments: 'some'
-	}))
-	.pipe(gulp.dest('lib/'));
-});
+// gulp.task('build-min', function() {
+// 	gulp.src(jsFiles)
+// 	.pipe(concat('parachute.js'))
+// 	.pipe(header(banner, { pkg: pkg }))
+// 	.pipe(rename({
+// 		suffix: '-' + pkg.version + '.min'
+// 	}))
+// 	.pipe(uglify({
+// 		preserveComments: 'some'
+// 	}))
+// 	.pipe(gulp.dest('dist/'));
+// });
+
+
+gulp.task('builder', ['clean', 'build'])
 
 
 // watch
 gulp.task('watch', function() {
-	gulp.watch(jsFiles, ['clean', 'build', 'build-min']);
+	gulp.watch(jsFiles, ['builder']);
 });
 
 // default
-gulp.task('default', ['clean', 'build', 'build-min', 'watch']);
+gulp.task('default', ['builder', 'watch']);
