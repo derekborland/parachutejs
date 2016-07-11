@@ -18,12 +18,14 @@
 
 
 			<!-- Section 1 -->
-			<div class="block red"></div>
+			<div class="block red">
+				<a href="#scrollTarget">Click</a>
+			</div>
 
 
 			<!-- Section 2 -->
 			<div class="block blue">
-
+				<a name="scrollTarget"></a>
 				<div class="container">
 					<div class="row">
 
@@ -97,11 +99,10 @@
 		;(function($){
 			
 			
-			Parachute.onReady(function(Parachute) {
+			$(window).ready(function(){
 				
 				// page
 				Parachute.page({
-					// pageWrapper: '#page',
 					scrollContainer: '#scrollContainer',
 					heightContainer: '#fakeScrollContainer'
 				});
@@ -126,10 +127,11 @@
 						//
 						// `active = false`
 						// element not in view
-					},
-					offset: (function(){
-						return 200;
-					})()
+						//
+						// if (active) { console.log(this); }
+						//
+						// use `this.$elemet`
+					}
 				});
 
 				// let's go!

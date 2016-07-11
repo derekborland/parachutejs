@@ -21,7 +21,9 @@ var banner = ['/**',
 
 // js files
 var jsFiles = [
-	'src/*.js'
+	'src/parachute.js',
+	'src/trigger.js',
+	'src/parallax.js'
 ];
 
 // clean up `lib` dir
@@ -33,7 +35,7 @@ gulp.task('clean', function() {
 // build
 gulp.task('build', function() {
 	gulp.src(jsFiles)
-	// .pipe(concat('parachute.js'))
+	.pipe(concat('parachute.js'))
 	.pipe(header(banner, { pkg: pkg }))
 	// .pipe(rename({
 	// 	suffix: '-' + pkg.version
@@ -43,21 +45,21 @@ gulp.task('build', function() {
 
 
 // build & min
-// gulp.task('build-min', function() {
-// 	gulp.src(jsFiles)
-// 	.pipe(concat('parachute.js'))
-// 	.pipe(header(banner, { pkg: pkg }))
-// 	.pipe(rename({
-// 		suffix: '-' + pkg.version + '.min'
-// 	}))
-// 	.pipe(uglify({
-// 		preserveComments: 'some'
-// 	}))
-// 	.pipe(gulp.dest('dist/'));
-// });
+gulp.task('build-min', function() {
+gulp.src(jsFiles)
+.pipe(concat('parachute.js'))
+.pipe(rename({
+	suffix: '-min'
+}))
+.pipe(uglify({
+	preserveComments: 'some'
+}))
+.pipe(header(banner, { pkg: pkg }))
+.pipe(gulp.dest('dist/'));
+});
 
 
-gulp.task('builder', ['clean', 'build'])
+gulp.task('builder', ['clean', 'build', 'build-min'])
 
 
 // watch

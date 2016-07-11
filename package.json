@@ -1,7 +1,7 @@
 {
   "name": "parachutejs",
-  "version": "0.0.2",
-  "description": "inertia scrolling/parallax js library",
+  "version": "0.0.3",
+  "description": "inertia scrolling/parallax jquery library",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,8 @@
     "js",
     "inertia",
     "scrolling",
-    "parallax"
+    "parallax",
+    "jquery"
   ],
   "author": "Derek Borland",
   "license": "MIT",

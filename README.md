@@ -1,13 +1,10 @@
 ```javascript
 ;(function($){
 			
-	// window ready
-	Parachute.onReady(function(Parachute) {
-		// console.log(Parachute);v
+	$(window).ready(function(){
 		
 		// page
 		Parachute.page({
-			// pageWrapper: '#page',
 			scrollContainer: '#scrollContainer',
 			heightContainer: '#fakeScrollContainer'
 		});
@@ -15,30 +12,28 @@
 		// parallax
 		Parachute.parallax({
 			element: '.js-parallax-1',
-			pxToMove: -400,
-			topTriggerOffset: 400
+			pxToMove: -400
 		});
 
 		Parachute.parallax({
 			element: '.js-parallax-2',
-			pxToMove: -200,
-			topTriggerOffset: 400
+			pxToMove: -200
 		});
 
 		// sequence
 		Parachute.sequence({
 			element: '.js-cascade-1',
 			callback: function(active) {
-				// console.log(active);
 				// `active = true`
 				// element is in view
 				//
 				// `active = false`
 				// element not in view
-			},
-			offset: (function(){
-				return 200;
-			})()
+				//
+				// if (active) { console.log(this); }
+				//
+				// use `this.$elemet`
+			}
 		});
 
 		// let's go!
