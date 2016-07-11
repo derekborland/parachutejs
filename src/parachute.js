@@ -33,7 +33,7 @@
 	};
 	
 	Parachute.prototype.initEvents = function () {
-		this.$window.scroll($.proxy(this.onResize, this));
+		this.$window.resize($.proxy(this.onResize, this));
 		this.$window.scroll($.proxy(this.onScroll, this));
 	};
 	
