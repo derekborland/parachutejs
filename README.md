@@ -1,3 +1,8 @@
+### Parachute JS - jQuery smooth scrolling/parallax
+
+[Download ParachuteJS](https://github.com/derekborland/parachutejs/blob/master/dist/parachute.js) 
+
+
 ```javascript
 ;(function($){
 			
