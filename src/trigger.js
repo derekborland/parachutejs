@@ -13,7 +13,7 @@
 	
 	Trigger.DEFAULTS = {
 		offset: 300,
-		callback: function() {} // no op
+		callback: function() {} // noop
 	};
 	
 	Trigger.prototype.callback = function (active) {

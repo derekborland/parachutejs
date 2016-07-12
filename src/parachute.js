@@ -57,9 +57,12 @@
 	};
 	
 	Parachute.prototype.scrollToAnchor = function (selectorName) {
-		var target = $('a[name="' + selectorName + '"]');
-		var pxFromTop = target[0].getBoundingClientRect().top;
-		setTimeout(function () { $(window).scrollTop(pxFromTop); }, 0);
+		var pxFromTop;
+		var target = $('a[id="' + selectorName + '"]'); // `name` attr not supported in html5
+		if(target.length) {
+			pxFromTop = target[0].getBoundingClientRect().top;
+			setTimeout(function () { $(window).scrollTop(pxFromTop); }, 0);
+		}
 	};
 	
 	Parachute.prototype.page = function (options) {
@@ -100,12 +103,10 @@
 	};
 	
 	Parachute.prototype.triggerAnimations = function () {
+		var bool;
 		for (var i = 0; i < this.triggerArrayLength; i++) {
-			if (this.triggerInView(i)) {
-				this.triggerArray[i].callback(true);
-			} else {
-				this.triggerArray[i].callback(false);
-			}
+			this.triggerInView(i) ? bool = true : bool = false;
+			this.triggerArray[i].callback(bool);
 		}
 	};
 	
@@ -136,7 +137,7 @@
 
 			// Element is in view
 			if( this.scrollTop > elementBottomPixedRange && this.scrollTop < elementTopPixelRange ) {
-				this.parallaxArr[i].currentScrollTop += ((( this.scrollTop - elementBottomPixedRange ) * pxMulitplier ) - this.parallaxArr[i].currentScrollTop ) * 0.075;
+				this.parallaxArr[i].currentScrollTop += ((( this.scrollTop - elementBottomPixedRange ) * pxMulitplier ) - this.parallaxArr[i].currentScrollTop ) * this.options.easingMultiplier;
 				if( this.parallaxArr[i].currentScrollTop < this.parallaxArr[i].pxToMove ) {
 					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
 				}
@@ -144,7 +145,7 @@
 			
 			// Element is below viewport
 			if( this.scrollTop < elementBottomPixedRange ) {
-				this.parallaxArr[i].currentScrollTop -= this.parallaxArr[i].currentScrollTop * 0.075;
+				this.parallaxArr[i].currentScrollTop -= this.parallaxArr[i].currentScrollTop * this.options.easingMultiplier;
 				if( this.parallaxArr[i].currentScrollTop >= -1 ) {
 					this.parallaxArr[i].currentScrollTop = 0;
 				}
@@ -152,7 +153,7 @@
 			
 			// Element is above viewport
 			if( this.scrollTop > elementTopPixelRange ) {
-				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * 0.075);
+				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * this.options.easingMultiplier);
 				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+1) {
 					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
 				}
