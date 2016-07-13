@@ -38,6 +38,11 @@
 		this.onEnterFrame();
 	};
 	
+	Parachute.prototype.reload = function () {
+		this.onResize();
+		this.initAnchorLinks(); // 
+	};
+	
 	Parachute.prototype.initEvents = function () {
 		this.$window.resize($.proxy(this.onResize, this));
 		this.$window.scroll($.proxy(this.onScroll, this));
@@ -126,8 +131,19 @@
 	
 	// parallax
 	Parachute.prototype.parallax = function (options) {
-		this.parallaxArr.push(new this.Parallax(options));
-		this.parallaxArrLength++;
+		var _Parachute = this;
+		// make array
+		if(!$.isArray(options.element)) {
+			options.element = [options.element];
+		}
+		// loop
+		for(var i = 0; i < options.element.length; i++) {
+			var $el = $(options.element[i]);
+			$el.each(function () {
+				_Parachute.parallaxArr.push(new _Parachute.Parallax(this, options));
+				_Parachute.parallaxArrLength++;
+			});	
+		}
 	};
 	
 	Parachute.prototype.parallaxAnimations = function () {
@@ -204,11 +220,11 @@
 	
 	'use strict'
 	
-	function Parallax (options) {
+	function Parallax (element, options) {
 		this.options = $.extend({}, Parallax.DEFAULTS, options);
-		this.element = this.options.element;
-		this.$element = $(this.options.element);
-		this.boundingBox = $(this.options.element)[0].getBoundingClientRect();
+		this.element = element;
+		this.$element = $(element);
+		this.boundingBox = $(element)[0].getBoundingClientRect();
 		this.topTriggerOffset = this.options.topTriggerOffset;
 		this.currentScrollTop = 0;
 		this.pxToMove = this.options.pxToMove;

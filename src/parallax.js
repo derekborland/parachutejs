@@ -2,11 +2,11 @@
 	
 	'use strict'
 	
-	function Parallax (options) {
+	function Parallax (element, options) {
 		this.options = $.extend({}, Parallax.DEFAULTS, options);
-		this.element = this.options.element;
-		this.$element = $(this.options.element);
-		this.boundingBox = $(this.options.element)[0].getBoundingClientRect();
+		this.element = element;
+		this.$element = $(element);
+		this.boundingBox = $(element)[0].getBoundingClientRect();
 		this.topTriggerOffset = this.options.topTriggerOffset;
 		this.currentScrollTop = 0;
 		this.pxToMove = this.options.pxToMove;

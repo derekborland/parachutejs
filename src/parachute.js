@@ -32,6 +32,11 @@
 		this.onEnterFrame();
 	};
 	
+	Parachute.prototype.reload = function () {
+		this.onResize();
+		this.initAnchorLinks(); // 
+	};
+	
 	Parachute.prototype.initEvents = function () {
 		this.$window.resize($.proxy(this.onResize, this));
 		this.$window.scroll($.proxy(this.onScroll, this));
@@ -120,8 +125,19 @@
 	
 	// parallax
 	Parachute.prototype.parallax = function (options) {
-		this.parallaxArr.push(new this.Parallax(options));
-		this.parallaxArrLength++;
+		var _Parachute = this;
+		// make array
+		if(!$.isArray(options.element)) {
+			options.element = [options.element];
+		}
+		// loop
+		for(var i = 0; i < options.element.length; i++) {
+			var $el = $(options.element[i]);
+			$el.each(function () {
+				_Parachute.parallaxArr.push(new _Parachute.Parallax(this, options));
+				_Parachute.parallaxArrLength++;
+			});	
+		}
 	};
 	
 	Parachute.prototype.parallaxAnimations = function () {
