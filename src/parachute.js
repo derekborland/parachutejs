@@ -103,8 +103,19 @@
 	
 	// trigger
 	Parachute.prototype.trigger = Parachute.prototype.sequence = function (options) {
-		this.triggerArray.push(new this.Trigger(options));
-		this.triggerArrayLength++;
+		var _Parachute = this;
+		// make array
+		if (!$.isArray(options.element)) {
+			options.element = [options.element];
+		}
+		// loop
+		for (var i = 0; i < options.element.length; i++) {
+			var $el = $(options.element[i]);
+			$el.each(function () {
+				_Parachute.triggerArray.push(new _Parachute.Trigger(this, options));
+				_Parachute.triggerArrayLength++;
+			});
+		}
 	};
 	
 	Parachute.prototype.triggerAnimations = function () {
@@ -127,11 +138,11 @@
 	Parachute.prototype.parallax = function (options) {
 		var _Parachute = this;
 		// make array
-		if(!$.isArray(options.element)) {
+		if (!$.isArray(options.element)) {
 			options.element = [options.element];
 		}
 		// loop
-		for(var i = 0; i < options.element.length; i++) {
+		for (var i = 0; i < options.element.length; i++) {
 			var $el = $(options.element[i]);
 			$el.each(function () {
 				_Parachute.parallaxArr.push(new _Parachute.Parallax(this, options));

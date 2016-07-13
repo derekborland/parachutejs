@@ -109,8 +109,19 @@
 	
 	// trigger
 	Parachute.prototype.trigger = Parachute.prototype.sequence = function (options) {
-		this.triggerArray.push(new this.Trigger(options));
-		this.triggerArrayLength++;
+		var _Parachute = this;
+		// make array
+		if (!$.isArray(options.element)) {
+			options.element = [options.element];
+		}
+		// loop
+		for (var i = 0; i < options.element.length; i++) {
+			var $el = $(options.element[i]);
+			$el.each(function () {
+				_Parachute.triggerArray.push(new _Parachute.Trigger(this, options));
+				_Parachute.triggerArrayLength++;
+			});
+		}
 	};
 	
 	Parachute.prototype.triggerAnimations = function () {
@@ -133,11 +144,11 @@
 	Parachute.prototype.parallax = function (options) {
 		var _Parachute = this;
 		// make array
-		if(!$.isArray(options.element)) {
+		if (!$.isArray(options.element)) {
 			options.element = [options.element];
 		}
 		// loop
-		for(var i = 0; i < options.element.length; i++) {
+		for (var i = 0; i < options.element.length; i++) {
 			var $el = $(options.element[i]);
 			$el.each(function () {
 				_Parachute.parallaxArr.push(new _Parachute.Parallax(this, options));
@@ -195,13 +206,13 @@
 	
 	'use strict'
 	
-	function Trigger (options) {
+	function Trigger (element, options) {
 		this.options = $.extend({}, Trigger.DEFAULTS, options);
-		this.element = this.options.element;
-		this.$element = $(this.options.element);
+		this.element = element
+		this.$element = $(element);
 		this.callback = this.options.callback;
 		this.offset = this.options.offset;
-		this.boundingBox = $(this.options.element)[0].getBoundingClientRect();
+		this.boundingBox = $(element)[0].getBoundingClientRect();
 	};
 	
 	Trigger.DEFAULTS = {

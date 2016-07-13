@@ -2,13 +2,13 @@
 	
 	'use strict'
 	
-	function Trigger (options) {
+	function Trigger (element, options) {
 		this.options = $.extend({}, Trigger.DEFAULTS, options);
-		this.element = this.options.element;
-		this.$element = $(this.options.element);
+		this.element = element
+		this.$element = $(element);
 		this.callback = this.options.callback;
 		this.offset = this.options.offset;
-		this.boundingBox = $(this.options.element)[0].getBoundingClientRect();
+		this.boundingBox = $(element)[0].getBoundingClientRect();
 	};
 	
 	Trigger.DEFAULTS = {
