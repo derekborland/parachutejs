@@ -19,9 +19,8 @@
 		this.scrollTop = 0;
 		this.currentScrollTop = 0;
 		this.triggerArray = [];
-		this.triggerArrayLength = 0;
 		this.parallaxArr = [];
-		this.parallaxArrLength = 0;
+		this.disabled = false;
 	};
 	
 	Parachute.DEFAULTS = {
@@ -38,9 +37,27 @@
 		this.onEnterFrame();
 	};
 	
+	// @todo
 	Parachute.prototype.reload = function () {
+		this.reset();
 		this.onResize();
-		this.initAnchorLinks(); // 
+	};
+	
+	// @todo
+	Parachute.prototype.reset = function () {
+		// clear arrays
+		this.triggerArray.length = 0;
+		this.parallaxArr.length = 0;
+	};
+	
+	// @todo
+	Parachute.prototype.disable = function () {
+		this.disabled = true;
+	};
+	
+	// @todo
+	Parachute.prototype.enable = function () {
+		this.disabled = false;
 	};
 	
 	Parachute.prototype.initEvents = function () {
@@ -51,7 +68,7 @@
 	Parachute.prototype.initAnchorLinks = function () {
 		var _Parachute = this;
 		this.checkURLHash();
-		this.$anchorLinks = $('a[href^="#"');
+		this.$anchorLinks = $('a[href^="#"]'); // starts with `#`
 		this.$anchorLinks.each(function () {
 			var $this = $(this);
 			$this.addClass('parachute-anchor-active');
@@ -69,7 +86,10 @@
 	
 	Parachute.prototype.scrollToAnchor = function (selectorName) {
 		var pxFromTop;
-		var target = $('a[id="' + selectorName + '"]'); // `name` attr not supported in html5
+		// @todo
+		// make work with html4/5
+		// `name` attr not valid in html5
+		var target = $('a[id="' + selectorName + '"]');
 		if(target.length) {
 			pxFromTop = target[0].getBoundingClientRect().top;
 			setTimeout(function () { $(window).scrollTop(pxFromTop); }, 0);
@@ -94,6 +114,7 @@
 	
 	Parachute.prototype.onEnterFrame = function () {
 		requestAnimationFrame($.proxy(this.onEnterFrame, this));
+		if (this.disabled) return;
 		this.scrollEasing();
 		this.triggerAnimations();
 		this.parallaxAnimations();
@@ -102,41 +123,30 @@
 	Parachute.prototype.scrollEasing = function () {
 		this.currentScrollTop += (this.scrollTop - this.currentScrollTop) * this.options.easingMultiplier;
 		if (this.currentScrollTop < 1) { this.currentScrollTop = 0 };
-		this.$scrollContainer.css({
-			'transform': 'translateY(' + -this.currentScrollTop + 'px) translateZ(0)'
-		});
+		this.$scrollContainer.css({ 'transform': 'translateY(' + -this.currentScrollTop + 'px) translateZ(0)' });
 	};
 	
 	// trigger
 	Parachute.prototype.trigger = Parachute.prototype.sequence = function (options) {
 		var _Parachute = this;
 		// make array
-		if (!$.isArray(options.element)) {
-			options.element = [options.element];
-		}
+		if (!$.isArray(options.element)) options.element = [options.element];
 		// loop
 		for (var i = 0; i < options.element.length; i++) {
 			var $el = $(options.element[i]);
-			$el.each(function () {
-				_Parachute.triggerArray.push(new _Parachute.Trigger(this, options));
-				_Parachute.triggerArrayLength++;
-			});
+			$el.each(function () { _Parachute.triggerArray.push(new _Parachute.Trigger(this, options)); });
 		}
 	};
 	
 	Parachute.prototype.triggerAnimations = function () {
-		var bool;
-		for (var i = 0; i < this.triggerArrayLength; i++) {
-			this.triggerInView(i) ? bool = true : bool = false;
-			this.triggerArray[i].callback(bool);
+		for (var i = 0, l = this.triggerArray.length; i < l; i++) {
+			this.triggerArray[i].callback(this.triggerInView(i));
 		}
 	};
 	
 	Parachute.prototype.triggerInView = function (i) {
 		var triggerOffset = this.triggerArray[i].boundingBox.top - this.windowHeight + this.triggerArray[i].offset;
-		if (this.scrollTop > triggerOffset) {
-			return true;
-		}
+		if (this.scrollTop > triggerOffset) return true;
 		return false;
 	};
 	
@@ -144,21 +154,16 @@
 	Parachute.prototype.parallax = function (options) {
 		var _Parachute = this;
 		// make array
-		if (!$.isArray(options.element)) {
-			options.element = [options.element];
-		}
+		if (!$.isArray(options.element)) options.element = [options.element];
 		// loop
-		for (var i = 0; i < options.element.length; i++) {
+		for (var i = 0; i < options.element.length; i++) {	
 			var $el = $(options.element[i]);
-			$el.each(function () {
-				_Parachute.parallaxArr.push(new _Parachute.Parallax(this, options));
-				_Parachute.parallaxArrLength++;
-			});	
+			$el.each(function () { _Parachute.parallaxArr.push(new _Parachute.Parallax(this, options)); });	
 		}
 	};
 	
 	Parachute.prototype.parallaxAnimations = function () {
-		for (var i = 0; i < this.parallaxArrLength; i++) {
+		for (var i = 0, l = this.parallaxArr.length; i < l; i++) {
 			var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementBottomPixedRange = this.parallaxArr[i].boundingBox.top - this.windowHeight;
 			var elementRangeDiff = elementTopPixelRange - elementBottomPixedRange;
