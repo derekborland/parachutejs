@@ -45,8 +45,10 @@
 	
 	// @todo
 	Parachute.prototype.reset = function () {
-		// this.triggerArray.length = 0;
-		// this.parallaxArr.length = 0;
+		// clear arrays
+		// save old versions???
+		this.triggerArray.length = 0;
+		this.parallaxArr.length = 0;
 	};
 	
 	// @todo
