@@ -6,7 +6,7 @@
 		this.options = $.extend({}, Trigger.DEFAULTS, options);
 		this.element = element
 		this.$element = $(element);
-		this.callback = this.options.callback;
+		this.cb = this.options.callback;
 		this.offset = this.options.offset;
 		this.boundingBox = $(element)[0].getBoundingClientRect();
 	};
@@ -17,7 +17,7 @@
 	};
 	
 	Trigger.prototype.callback = function (active) {
-		return this.callback(active);
+		return this.cb(active);
 	};
 	
 	Parachute.Trigger = Trigger;

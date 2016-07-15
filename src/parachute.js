@@ -8,7 +8,7 @@
 		this.$scrollContainer;
 		this.$heightContainer;
 		this.$anchorLinks;
-		this.windowWidth;
+		// this.windowWidth;
 		this.windowHeight;
 		this.scrollTop = 0;
 		this.currentScrollTop = 0;
@@ -40,6 +40,7 @@
 	// @todo
 	Parachute.prototype.reset = function () {
 		// clear arrays
+		// save old versions???
 		this.triggerArray.length = 0;
 		this.parallaxArr.length = 0;
 	};
@@ -98,7 +99,7 @@
 	
 	Parachute.prototype.onResize = function () {
 		this.windowHeight = this.$window.height();
-		this.windowWidth = this.$window.width();
+		// this.windowWidth = this.$window.width();
 		this.$heightContainer.css('height', this.$scrollContainer.height());
 	};
 	
@@ -122,14 +123,16 @@
 	
 	// trigger
 	Parachute.prototype.trigger = Parachute.prototype.sequence = function (options) {
-		var _Parachute = this;
-		// make array
+		var _Trigger, _Parachute = this;
 		if (!$.isArray(options.element)) options.element = [options.element];
-		// loop
 		for (var i = 0; i < options.element.length; i++) {
 			var $el = $(options.element[i]);
-			$el.each(function () { _Parachute.triggerArray.push(new _Parachute.Trigger(this, options)); });
+			$el.each(function () { 
+				_Trigger = new _Parachute.Trigger(this, options);
+				_Parachute.triggerArray.push(_Trigger);
+			});
 		}
+		return _Trigger;
 	};
 	
 	Parachute.prototype.triggerAnimations = function () {
@@ -146,14 +149,16 @@
 	
 	// parallax
 	Parachute.prototype.parallax = function (options) {
-		var _Parachute = this;
-		// make array
+		var _Parallax, _Parachute = this;
 		if (!$.isArray(options.element)) options.element = [options.element];
-		// loop
 		for (var i = 0; i < options.element.length; i++) {	
 			var $el = $(options.element[i]);
-			$el.each(function () { _Parachute.parallaxArr.push(new _Parachute.Parallax(this, options)); });	
+			$el.each(function () {
+				_Parallax = new _Parachute.Parallax(this, options);
+				_Parachute.parallaxArr.push(_Parallax);
+			});
 		}
+		return _Parallax;
 	};
 	
 	Parachute.prototype.parallaxAnimations = function () {
