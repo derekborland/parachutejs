@@ -53,7 +53,47 @@
 						<!-- -->
 
 						<div class="col-md-6">
-							<div class="content js-parallax-2">
+							<div class="content js-parallax-1">
+								<div class="square">
+
+									<div class="row">
+
+										<div class="col-md-6">
+											<div class="cascade js-cascade"></div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="cascade js-cascade"></div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="content js-parallax-1" style="margin-top: 200px;">
+								<div class="square">
+
+									<div class="row">
+
+										<div class="col-md-6">
+											<div class="cascade js-cascade-1"></div>
+										</div>
+
+										<div class="col-md-6">
+											<div class="cascade js-cascade-2"></div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- -->
+
+						<div class="col-md-6">
+							<div class="content js-parallax-1">
 								<div class="square">
 
 									<div class="row">
@@ -125,23 +165,31 @@
 				// });
 
 				// sequence
+				// Parachute.sequence({
+				// 	element: ['.js-parallax-1', '.js-parallax-2'],
+				// 	callback: function(active) {
+				// 		if (active) {
+				// 			$(this.$element).addClass('test');
+				// 		} else {
+				// 			$(this.$element).removeClass('test');
+				// 		}
+				// 	}
+				// });
+			
 				Parachute.sequence({
-					element: ['.js-cascade-1', '.js-cascade-2'],
+					element: '.js-parallax-1',
 					callback: function(active) {
-						// `active = true`
-						// element is in view
-						//
-						// `active = false`
-						// element not in view
-						//
-						// if (active) { console.log(this); }
-						//
-						// use `this.$elemet`
+						if (active) {
+							$(this.$element).addClass('test');
+						} else {
+							$(this.$element).removeClass('test');
+						}
 					}
 				});
 
 				// let's go!
 				Parachute.init();
+				
 				
 				
 				// ajax page setup

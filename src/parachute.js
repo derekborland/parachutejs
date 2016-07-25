@@ -47,6 +47,7 @@
 	
 	// @todo
 	Parachute.prototype.disable = function () {
+		// freeze scrollbar???
 		this.disabled = true;
 	};
 	
