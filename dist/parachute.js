@@ -1,6 +1,6 @@
 /**
  * parachutejs - inertia scrolling/parallax jquery library
- * @version v0.0.4
+ * @version v0.0.5
  * @link https://github.com/derekborland/parachutejs#readme
  * @license MIT
  */
