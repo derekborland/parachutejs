@@ -15,7 +15,7 @@
 	Parallax.DEFAULTS = {
 		speed: 1,
 		pxToMove: 0,
-		topTriggerOffset: 400
+		topTriggerOffset: 0
 	};
 	
 	Parachute.Parallax = Parallax;

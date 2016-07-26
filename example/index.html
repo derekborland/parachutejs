@@ -53,47 +53,7 @@
 						<!-- -->
 
 						<div class="col-md-6">
-							<div class="content js-parallax-1">
-								<div class="square">
-
-									<div class="row">
-
-										<div class="col-md-6">
-											<div class="cascade js-cascade"></div>
-										</div>
-
-										<div class="col-md-6">
-											<div class="cascade js-cascade"></div>
-										</div>
-
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="col-md-6">
-							<div class="content js-parallax-1" style="margin-top: 200px;">
-								<div class="square">
-
-									<div class="row">
-
-										<div class="col-md-6">
-											<div class="cascade js-cascade-1"></div>
-										</div>
-
-										<div class="col-md-6">
-											<div class="cascade js-cascade-2"></div>
-										</div>
-
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<!-- -->
-
-						<div class="col-md-6">
-							<div class="content js-parallax-1">
+							<div class="content js-parallax-2">
 								<div class="square">
 
 									<div class="row">
@@ -111,7 +71,6 @@
 							</div>
 						</div>
 
-						<!-- -->
 
 					</div>
 				</div>
@@ -138,19 +97,22 @@
 
 		;(function($){
 			
-			
+			/* -------------------- window ready -------------------- */
 			$(window).ready(function(){
 				
-				// page
+				
+				/* -------------------- page setup -------------------- */
 				Parachute.page({
 					scrollContainer: '#scrollContainer',
 					heightContainer: '#fakeScrollContainer'
 				});
 
-				// parallax
+				
+				/* -------------------- parallax -------------------- */
 				Parachute.parallax({
 					element: '.js-parallax-1',
 					pxToMove: -400
+					// topTriggerOffset: 200
 				});
 				
 				Parachute.parallax({
@@ -164,18 +126,8 @@
 				// 	pxToMove: -200
 				// });
 
-				// sequence
-				// Parachute.sequence({
-				// 	element: ['.js-parallax-1', '.js-parallax-2'],
-				// 	callback: function(active) {
-				// 		if (active) {
-				// 			$(this.$element).addClass('test');
-				// 		} else {
-				// 			$(this.$element).removeClass('test');
-				// 		}
-				// 	}
-				// });
 			
+				/* -------------------- sequence/trigger -------------------- */
 				Parachute.sequence({
 					element: '.js-parallax-1',
 					callback: function(active) {
@@ -186,45 +138,23 @@
 						}
 					}
 				});
-
-				// let's go!
-				Parachute.init();
 				
-				
-				
-				// ajax page setup
-				//
-				// Parachute.page({
-				// 	scrollContainer: '#scrollContainer',
-				// 	heightContainer: '#fakeScrollContainer'
-				// });
-				//
-				// function pageSetup() {
-				//	
-				// 	// parallax
-				// 	Parachute.parallax({
-				// 		element: '.js-parallax-1',
-				// 		pxToMove: -400
-				// 	});
-				//
-				// 	Parachute.parallax({
-				// 		element: '.js-parallax-2',
-				// 		pxToMove: -200
-				// 	});
-				//
-				// 	// sequence/trigger
-				// 	Parachute.sequence({
-				// 		element: ['.js-cascade-1', '.js-cascade-2'],
-				// 		callback: function(active) {
-				// 			console.log(active);
+				// accepts array of selectors
+				// Parachute.sequence({
+				// 	element: ['.js-parallax-1', '.js-parallax-2'],
+				// 	callback: function(active) {
+				// 		if (active) {
+				// 			$(this.$element).addClass('test');
+				// 		} else {
+				// 			$(this.$element).removeClass('test');
 				// 		}
-				// 	});
-				// };
-				//
-				// pageSetup();
-				//
-				// Parachute.init();
-				
+				// 	}
+				// });
+
+
+				/* -------------------- init -------------------- */
+				Parachute.init();
+								
 			});
 
 		})(jQuery);

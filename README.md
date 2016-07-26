@@ -5,19 +5,23 @@
 
 ```javascript
 ;(function($){
-
+			
+	/* -------------------- window ready -------------------- */
 	$(window).ready(function(){
 		
-		// page
+		
+		/* -------------------- page setup -------------------- */
 		Parachute.page({
 			scrollContainer: '#scrollContainer',
 			heightContainer: '#fakeScrollContainer'
 		});
 
-		// parallax
+		
+		/* -------------------- parallax -------------------- */
 		Parachute.parallax({
 			element: '.js-parallax-1',
 			pxToMove: -400
+			// topTriggerOffset: 200
 		});
 		
 		Parachute.parallax({
@@ -31,25 +35,35 @@
 		// 	pxToMove: -200
 		// });
 
-		// sequence
+
+		/* -------------------- sequence/trigger -------------------- */
 		Parachute.sequence({
-			element: ['.js-cascade-1', '.js-cascade-2'],
+			element: '.js-parallax-1',
 			callback: function(active) {
-				// `active = true`
-				// element is in view
-				//
-				// `active = false`
-				// element not in view
-				//
-				// if (active) { console.log(this); }
-				//
-				// use `this.$elemet`
+				if (active) {
+					$(this.$element).addClass('test');
+				} else {
+					$(this.$element).removeClass('test');
+				}
 			}
 		});
-
-		// let's go!
-		Parachute.init();
 		
+		// accepts array of selectors
+		// Parachute.sequence({
+		// 	element: ['.js-parallax-1', '.js-parallax-2'],
+		// 	callback: function(active) {
+		// 		if (active) {
+		// 			$(this.$element).addClass('test');
+		// 		} else {
+		// 			$(this.$element).removeClass('test');
+		// 		}
+		// 	}
+		// });
+
+
+		/* -------------------- init -------------------- */
+		Parachute.init();
+						
 	});
 
 })(jQuery);

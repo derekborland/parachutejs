@@ -170,18 +170,19 @@
 	
 	Parachute.prototype.parallaxAnimations = function () {
 		for (var i = 0, l = this.parallaxArr.length; i < l; i++) {
+			// var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementBottomPixedRange = this.parallaxArr[i].boundingBox.top - this.windowHeight;
 			var elementRangeDiff = elementTopPixelRange - elementBottomPixedRange;
-			var pxMulitplier = this.parallaxArr[i].pxToMove / this.windowHeight;
+			var pxMulitplier = this.parallaxArr[i].pxToMove / (this.windowHeight + this.parallaxArr[i].boundingBox.height + this.parallaxArr[i].pxToMove - this.parallaxArr[i].topTriggerOffset);
 
 			// console.log('scrollTop:', this.scrollTop, 'topRange:', elementTopPixelRange, 'bottomRange:', elementBottomPixedRange, 'diff:', elementRangeDiff);
 
 			// @todo cleanup
 
 			// Element is in view
-			if( this.scrollTop > elementBottomPixedRange && this.scrollTop < elementTopPixelRange ) {
-				this.parallaxArr[i].currentScrollTop += ((( this.scrollTop - elementBottomPixedRange ) * pxMulitplier ) - this.parallaxArr[i].currentScrollTop ) * this.options.easingMultiplier;
+			if( this.scrollTop > elementBottomPixedRange && this.scrollTop < elementTopPixelRange ) {				
+				this.parallaxArr[i].currentScrollTop += ((-(this.parallaxArr[i].boundingBox.top - this.scrollTop - this.windowHeight) * pxMulitplier) - this.parallaxArr[i].currentScrollTop) * this.options.easingMultiplier;
 				if( this.parallaxArr[i].currentScrollTop < this.parallaxArr[i].pxToMove ) {
 					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
 				}
@@ -196,12 +197,13 @@
 			}
 			
 			// Element is above viewport
-			if( this.scrollTop > elementTopPixelRange ) {
-				this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * this.options.easingMultiplier);
-				if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+1) {
-					this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
-				}
-			}
+			// if( this.scrollTop > elementTopPixelRange ) {
+			// 	this.parallaxArr[i].currentScrollTop += Math.round(this.parallaxArr[i].currentScrollTop * this.options.easingMultiplier);
+			// 	if( this.parallaxArr[i].currentScrollTop <= this.parallaxArr[i].pxToMove+1) {
+			// 		this.parallaxArr[i].currentScrollTop = this.parallaxArr[i].pxToMove;
+			// 	}
+			// 	console.log('outta view');
+			// }
 
 			this.parallaxArr[i].$element.css({
 				'transform': 'translateY(' + this.parallaxArr[i].currentScrollTop + 'px) translateZ(0)',
@@ -255,7 +257,7 @@
 	Parallax.DEFAULTS = {
 		speed: 1,
 		pxToMove: 0,
-		topTriggerOffset: 400
+		topTriggerOffset: 0
 	};
 	
 	Parachute.Parallax = Parallax;
