@@ -13,7 +13,7 @@
 	};
 	
 	Parallax.DEFAULTS = {
-		speed: 1,
+		// speed: 1,
 		pxToMove: 0,
 		topTriggerOffset: 0
 	};

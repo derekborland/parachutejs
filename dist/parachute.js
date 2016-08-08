@@ -1,6 +1,6 @@
 /**
  * parachutejs - inertia scrolling/parallax jquery library
- * @version v0.0.5
+ * @version v0.0.6
  * @link https://github.com/derekborland/parachutejs#readme
  * @license MIT
  */
@@ -39,7 +39,7 @@
 	
 	// @todo
 	Parachute.prototype.reload = function () {
-		this.reset();
+		// this.reset();
 		this.onResize();
 	};
 	
@@ -47,8 +47,8 @@
 	Parachute.prototype.reset = function () {
 		// clear arrays
 		// save old versions???
-		this.triggerArray.length = 0;
-		this.parallaxArr.length = 0;
+		// this.triggerArray.length = 0;
+		// this.parallaxArr.length = 0;
 	};
 	
 	// @todo
@@ -60,6 +60,11 @@
 	// @todo
 	Parachute.prototype.enable = function () {
 		this.disabled = false;
+	};
+	
+	// @todo
+	Parachute.prototype.resetElements = function () {
+		// reset elements to their initial positions. (i.e remove css transforms)
 	};
 	
 	Parachute.prototype.initEvents = function () {
@@ -93,7 +98,7 @@
 		// `name` attr not valid in html5
 		var target = $('a[id="' + selectorName + '"]');
 		if(target.length) {
-			pxFromTop = target[0].getBoundingClientRect().top;
+			pxFromTop = target[0].getBoundingClientRect().top + this.currentScrollTop;
 			setTimeout(function () { $(window).scrollTop(pxFromTop); }, 0);
 		}
 	};
@@ -255,7 +260,7 @@
 	};
 	
 	Parallax.DEFAULTS = {
-		speed: 1,
+		// speed: 1,
 		pxToMove: 0,
 		topTriggerOffset: 0
 	};
