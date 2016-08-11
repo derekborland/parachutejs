@@ -33,7 +33,7 @@
 						<!-- -->
 
 						<div class="col-md-6">
-							<div class="content js-parallax-1" style="margin-top: 200px;">
+							<div class="content js-parallax-1" >
 								<div class="square">
 
 									<div class="row">
@@ -99,38 +99,28 @@
 	<script>
 
 		;(function($){
-			
-			/* -------------------- window ready -------------------- */
 			$(window).ready(function(){
 				
 				
-				/* -------------------- page setup -------------------- */
-				Parachute.page({
-					scrollContainer: '#scrollContainer',
-					heightContainer: '#fakeScrollContainer'
-				});
+					
+					Parachute.page({
+						scrollContainer: '#scrollContainer',
+						heightContainer: '#fakeScrollContainer'
+					});
 
+					Parachute.parallax({
+						element: '.js-parallax-1',
+						pxToMove: -400
+						// topTriggerOffset: 200
+					});
+					
+					Parachute.parallax({
+						element: '.js-parallax-2',
+						pxToMove: -200
+					});
+					
 				
-				/* -------------------- parallax -------------------- */
-				Parachute.parallax({
-					element: '.js-parallax-1',
-					pxToMove: -400
-					// topTriggerOffset: 200
-				});
-				
-				Parachute.parallax({
-					element: '.js-parallax-2',
-					pxToMove: -200
-				});
 
-				// accepts array of selectors
-				// Parachute.parallax({
-				// 	element: ['.js-parallax-2', '.js-parallax-1'],
-				// 	pxToMove: -200
-				// });
-
-			
-				/* -------------------- sequence/trigger -------------------- */
 				Parachute.sequence({
 					element: '.js-parallax-1',
 					offset: 0,
@@ -142,21 +132,7 @@
 						}
 					}
 				});
-				
-				// accepts array of selectors
-				// Parachute.sequence({
-				// 	element: ['.js-parallax-1', '.js-parallax-2'],
-				// 	callback: function(active) {
-				// 		if (active) {
-				// 			$(this.$element).addClass('test');
-				// 		} else {
-				// 			$(this.$element).removeClass('test');
-				// 		}
-				// 	}
-				// });
 
-
-				/* -------------------- init -------------------- */
 				Parachute.init();
 								
 			});

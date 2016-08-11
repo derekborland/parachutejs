@@ -8,7 +8,7 @@
 		this.$scrollContainer;
 		this.$heightContainer;
 		this.$anchorLinks;
-		// this.windowWidth;
+		this.windowWidth;
 		this.windowHeight;
 		this.scrollTop = 0;
 		this.currentScrollTop = 0;
@@ -34,7 +34,7 @@
 	// @todo
 	Parachute.prototype.reload = function () {
 		// this.reset();
-		this.onResize();
+		// this.onResize();
 	};
 	
 	// @todo
@@ -48,23 +48,36 @@
 	// @todo
 	Parachute.prototype.disable = function () {
 		// freeze scrollbar???
-		this.disabled = true;
+		// this.disabled = true;
 	};
 	
 	// @todo
 	Parachute.prototype.enable = function () {
-		this.disabled = false;
+		// this.disabled = false;
 	};
 	
 	// @todo
 	Parachute.prototype.resetElements = function () {
 		// reset elements to their initial positions. (i.e remove css transforms)
+		
+		// reset main scroll container
+		this.$scrollContainer.css({ 'transform': 'translateY(0) translateZ(0)' });
+		
+		// reset parallax elements
+		for(var i = 0, l = this.parallaxArr.length; i < l; i++) {
+			this.parallaxArr[i].$element.css({ 'transform': 'translateY(0) translateZ(0)' });
+		}
 	};
 	
 	Parachute.prototype.initEvents = function () {
-		this.$window.resize($.proxy(this.onResize, this));
-		this.$window.scroll($.proxy(this.onScroll, this));
+		this.$window.on('resize', $.proxy(this.onResize, this));
+		this.$window.on('scroll', $.proxy(this.onScroll, this));
 	};
+	
+	// Parachute.prototype.disableEvents = function () {
+	// 	this.$window.off('resize', $.proxy(this.onResize, this));
+	// 	this.$window.off('scroll', $.proxy(this.onScroll, this));
+	// };
 	
 	Parachute.prototype.initAnchorLinks = function () {
 		var _Parachute = this;
@@ -88,8 +101,6 @@
 	Parachute.prototype.scrollToAnchor = function (selectorName) {
 		var pxFromTop;
 		// @todo
-		// make work with html4/5
-		// `name` attr not valid in html5
 		var target = $('a[id="' + selectorName + '"]');
 		if(target.length) {
 			pxFromTop = target[0].getBoundingClientRect().top + this.currentScrollTop;
@@ -105,8 +116,10 @@
 	
 	Parachute.prototype.onResize = function () {
 		this.windowHeight = this.$window.height();
-		// this.windowWidth = this.$window.width();
-		this.$heightContainer.css('height', this.$scrollContainer.height());
+		this.windowWidth = this.$window.width();
+		
+		this.$heightContainer.css('height', this.$scrollContainer.height());	
+		this.resetElements();
 	};
 	
 	Parachute.prototype.onScroll = function () {
@@ -115,8 +128,8 @@
 	
 	Parachute.prototype.onEnterFrame = function () {
 		requestAnimationFrame($.proxy(this.onEnterFrame, this));
-		if (this.disabled) return;
-		this.scrollEasing();
+
+		this.scrollEasing();	
 		this.triggerAnimations();
 		this.parallaxAnimations();
 	};
@@ -168,14 +181,14 @@
 	};
 	
 	Parachute.prototype.parallaxAnimations = function () {
+		
+		if(this.windowWidth < 1024) return;
+		
 		for (var i = 0, l = this.parallaxArr.length; i < l; i++) {
-			// var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementTopPixelRange = this.parallaxArr[i].boundingBox.top + this.parallaxArr[i].boundingBox.height - this.parallaxArr[i].topTriggerOffset;
 			var elementBottomPixedRange = this.parallaxArr[i].boundingBox.top - this.windowHeight;
 			var elementRangeDiff = elementTopPixelRange - elementBottomPixedRange;
 			var pxMulitplier = this.parallaxArr[i].pxToMove / (this.windowHeight + this.parallaxArr[i].boundingBox.height + this.parallaxArr[i].pxToMove - this.parallaxArr[i].topTriggerOffset);
-
-			// console.log('scrollTop:', this.scrollTop, 'topRange:', elementTopPixelRange, 'bottomRange:', elementBottomPixedRange, 'diff:', elementRangeDiff);
 
 			// @todo cleanup
 
