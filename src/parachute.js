@@ -135,6 +135,7 @@
 	};
 	
 	Parachute.prototype.scrollEasing = function () {
+		if(this.windowWidth < 1024) return;
 		this.currentScrollTop += (this.scrollTop - this.currentScrollTop) * this.options.easingMultiplier;
 		if (this.currentScrollTop < 1) { this.currentScrollTop = 0 };
 		this.$scrollContainer.css({ 'transform': 'translateY(' + -this.currentScrollTop + 'px) translateZ(0)' });

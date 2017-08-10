@@ -24,7 +24,7 @@
     "url": "https://github.com/derekborland/parachutejs/issues"
   },
   "homepage": "https://github.com/derekborland/parachutejs#readme",
-  "devDependencies": {
+  "dependencies": {
     "babel-preset-es2015": "^6.9.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
